@@ -2,32 +2,43 @@
 <meta charset="utf-8">
 <title>Census Hierarchy</title>
 <style>
+	body{
+		background-color:gold;
+		font-weight:300;
+	}
 	a{color:#fff;}
 	#diagram{
-		width:700px;
-		height:700px;
+		width:760px;
+		height:100vh;
 		font-family:Roboto;
 		position:fixed;
-		top:60px;
+		top:0px;
+		left:0px;
+		background-color:#fff;
 	}
 	#data{
 		position:fixed;
-/*		border:1px solid;
-*/		left:760px;
-		top:100px;
+		left:760px;
+		top:0px;
 		font-family:Roboto;
-		padding:10px;
+		padding:5px;
+		padding-top:60px;
 		font-size:14px;
 		text-align:center;
+		background-color:gold;
+		color:#000;
+		height:100vh;
 	}
 	#detail{
+		padding-top:40px;
 /*		border:1px dotted;
-*/		padding:20px;
-		margin:10px;
+*/		/*padding:20px;
+		margin:10px;*/
 	}
 	#dataTitle{
 		text-align:center;
 	}
+	._0{font-size:36px;}
 	._1{font-size:24px;}
 	._2{font-size:20px;}
 	._3{font-size:18px;}
@@ -61,7 +72,7 @@
 	}
 	#info{
 		font-family:Roboto;
-		font-size:14px;
+		font-size:16px;
 		padding:10px;
 		width:100vw;
 		color:#fff;
@@ -71,6 +82,9 @@
 		left:0px;
 		position:fixed;
 	}
+	#title{
+		font-size:36px;
+	}
 </style>
 
 <body>
@@ -79,17 +93,20 @@
 <!-- <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
-<div id="info">An interactive reproduction of a <a href="https://www2.census.gov/geo/pdfs/reference/geodiagram.pdf" target="blank">diagram</a>
-	from the Census Bureau describing the hierarchy of the geographic units that Census data are packaged into. <!-- Data of the population of each layer of hierarchy is based on the American Community Survey's most recent 2020 5-year estimates. --></div> 
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap" rel="stylesheet">
+
+<!-- <div id="info">
+	<div id="title">Census Geographic Hierarchy</div>
+	An interactive reproduction of a <a href="https://www2.census.gov/geo/pdfs/reference/geodiagram.pdf" target="blank">diagram</a>
+	from the Census Bureau describing the hierarchy of the geographic units that Census data are packaged into. Data of the population of each layer of hierarchy is based on the American Community Survey's most recent 2020 5-year estimates.</div> -->
    
 <div id="diagram"></div>
 <div id="data">
-	<div id="dataTitle"><span class="_4">Population data based on ACS 2020 5-Year Estimates</span></div>
+	<div id="dataTitle"><span class="_4">American Community Survey 2020 5-Year Estimates</span></div>
 	<div id="detail"></div>
 	<div id="chartPopup">test</div>
 </div>
-<div id="footer">*not data for all geographic levels were available in the ACS, AIANNH areas will be presented separately</div>
+<!-- <div id="footer">*not data for all geographic levels were available in the ACS</div> -->
 <script src="diagram.js"></script>
 
 </body>

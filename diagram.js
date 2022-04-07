@@ -19,11 +19,13 @@ var files = ["s_block_groups.csv",
 "s_subminor_civil_divisions.csv",
 "s_urban_areas.csv",
 "s_ZIP_Code_Tabulation_Areas.csv"]
+
+var mainShadowColor = "gold"
 var colors = {
 	nation:"#000",  
 	regions:"#7368d3",
 	divisions:"#bf50ce",
-	states:"#48b263",
+	states:"#458e2f",
 	counties:"#cd5136",
 	tracts:"#48b263",
 	groups:"#4bbbb1",
@@ -60,9 +62,9 @@ var promises = [d3.csv("labels.csv"),d3.csv("maxmin.csv"),d3.csv("links.csv"),d3
 // for(var f in files){
 // 	promises.push(d3.csv(files[f]))
 // }
-var w = 780
+var w = 750
 var h = 900
-var spaceX = 38
+var spaceX = 35
 var spaceY = 70
 
 Promise.all(promises)
@@ -140,7 +142,7 @@ function ready(data){
 	}
 	
 	d3.selectAll("#nation").style("display","block")
-	d3.select("text #nation").style("text-shadow","4px 4px 8px gold")
+	d3.select("#nation_label").style("font-weight",900)//.style("text-shadow","4px 4px 8px gold")
 }
 function drawNation(data){
 	//console.log(data)
@@ -150,21 +152,24 @@ function drawNation(data){
 	var barH = 40
 	
 	var nationDiv = d3.select("#detail").append("div").attr("id","nation").attr("class","detailChart")
-	var nationTitle = nationDiv.append("div").html("Population Range for Each Geography")
-	.attr("class","_4")
+	var nationTitle = nationDiv.append("div").html("NATION POPULATION OVERVIEW")
+	.attr("class","_0")
 	var nationSvg = nationDiv.append("svg").attr("width",w+p*7).attr("height",h)
 	
 	var xScale = d3.scaleLinear().domain([0,parseInt(data[0].max)]).range([5,w])
 	
 	var xAxis = d3.axisBottom().scale(xScale)
-		.ticks(10)
+		.ticks(4)
 		.tickSize(h-p*2)
 		.tickFormat(function(d,i){return d/1000000+" million"})
 	
 	nationSvg.append("g").call(xAxis)
 	.attr("transform","translate("+p*4+","+(p/2+5)+")")
 	.style("stroke-dasharray", "1 2")
+	.style("font-size","14px")
 	
+	nationSvg.append("text").text("POPULATION").attr("x",w).attr("y",h-p/2).style("text-anchor","middle")
+	.attr("class","_1")
 	nationSvg.selectAll(".nationBars")
 	.data(data)
 	.enter()
@@ -257,14 +262,14 @@ function drawNation(data){
 	.attr("transform","translate("+p*4+","+p/2+")")
 	.attr("fill","none")
 	.attr("stroke-width","4px")
-	.attr("stroke","#fff")
+	.attr("stroke",mainShadowColor)
 	.attr("opacity",1)
 	
 	nationSvg.selectAll(".nationLabel")
 	.data(data)
 	.enter()
 	.append("text")
-	.attr("class","nationLabel _6")
+	.attr("class","nationLabel _5")
 	.attr("x",function(d){
 		if(d.geo=="nation"){
 			return xScale(parseInt(d.max))+10
@@ -329,6 +334,8 @@ function drawScatter(data,geo,chartColor){
 	var scatterDiv = d3.select("#detail").append("div").attr("id",cleanString(geo))
 	.attr("class","detailChart")
 	var titleDiv = scatterDiv.append("div").html(geo.toUpperCase())
+	.style("color",chartColor).attr("class","_0")
+	
 	var scatterSvg = scatterDiv.append('svg')
 	.attr("width",scatterW+scatterP*3)
 	.attr("height",scatterH+scatterP*2)
@@ -369,7 +376,7 @@ function drawScatter(data,geo,chartColor){
 	.attr("transform","translate("+scatterP+","+scatterP+")")
 		.style("cursor","pointer")
 	.on("mouseover",function(e,d){
-			d3.select(this).attr("opacity",1)
+		//	d3.select(this).attr("opacity",1)
 			d3.select("#chartPopup")
 		.html(d.name+"<br>"+numberWithCommas(d.population)
 		+" residents<br>"+numberWithCommas(d.area)+" sq. miles")
@@ -378,7 +385,7 @@ function drawScatter(data,geo,chartColor){
 			.style("visibility","visible")
 	})
 	.on("mouseout",function(e,d){
-			d3.select(this).attr("opacity",.5)
+			//d3.select(this).attr("opacity",.5)
 		d3.select("#chartPopup").style("visibility","hidden")
 	})
 	if(geo!="states"){
@@ -446,6 +453,8 @@ function drawChart(data, w, p, ch, chartColor){
 			var chartDiv = d3.select("#detail").append("div").attr("id",cleanString(geo))
 			.attr("class","detailChart")
 			var titleDiv = chartDiv.append("div").html(geo.split("_").join(" ").toUpperCase())
+			.style("color",chartColor).attr("class","_0")
+			
 			var chartSvg = chartDiv.append("svg").attr("width",w+p*2).attr("height",ch+p*2)
 			var yScale = d3.scaleSqrt().domain([1,max]).range([5,ch])
 			var yScaleFlip= d3.scaleSqrt().domain([max,1]).range([1,ch])
@@ -552,7 +561,7 @@ function drawDiagram(data,maxMinData,svg){
 			return "label _"+d.fontClass
 	})
 	.attr("id",function(d){
-		return cleanString(d.label)
+		return cleanString(d.label)+"_label"
 	})
 	.text(function(d){
 		if(d.colorClass=="blank"){return ""}
@@ -582,29 +591,41 @@ function drawDiagram(data,maxMinData,svg){
 		 return "pointer"
 	 }
 	})
+	.style("text-decoration",function(d){
+   	 if(d["maxMin"]!=undefined){
+   		 return "underline"
+   	 }
+	})
 	.on("click",function(e,d){
+      	 if(d["maxMin"]!=undefined){
+		
 		var chartId = cleanString(d.label)
 		activeId = chartId
 		//console.log(chartId)
 		d3.selectAll(".detailChart").style("display","none")
 		d3.selectAll("#"+chartId).style("display","block")
-		d3.selectAll(".label").style("text-shadow","1px 1px 2px white")
-		d3.select(this).style("text-shadow","1px 1px 2px gold")
-		
+		d3.selectAll(".label").style("font-weight",300)//.style("text-shadow","1px 1px 2px white")
+		d3.select(this).style("font-weight",900)
+		//.style("text-shadow","1px 1px 2px gold")
+		 }
 	})
 	 .on("mouseover",function(e,d){
 	//	 console.log(d)
 		 
 		 if(d["maxMin"]!=undefined){
-			 d3.select(this).style("text-shadow","4px 4px 8px gold")
+			
+		d3.select(this).style("font-weight",900)
+			// d3.select(this).style("text-shadow","4px 4px 8px gold")
 		 }
 	 })
 	 .on("mouseout",function(e,d){
 		 var idName = cleanString(d.label)
 		 if(activeId==idName){
-			 d3.select(this).style("text-shadow","4px 4px 8px gold")
+			 d3.select(this).style("font-weight",900)
+			// d3.select(this).style("text-shadow","4px 4px 8px gold")
 		 }else{
-			 d3.select(this).style("text-shadow","1px 1px 2px white")
+			 d3.select(this).style("font-weight",300)
+			// d3.select(this).style("text-shadow","1px 1px 2px white")
 		 }	 	
 	 })
 	// 		var string = ""

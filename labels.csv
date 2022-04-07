@@ -1,6 +1,6 @@
 label,x,y,anchor,fontClass,colorClass
 NATION,0,0,middle,1,nation
-AIANNH Areas*,3.5,0,start,1,nation
+AIANNH Areas*,3.5,0,start,3,nation
 AIANNH_top,8.85,0,start,1,blank
 AIANNH_bottom,8.85,9,start,1,blank
 REGIONS,0,1.5,middle,2,regions
