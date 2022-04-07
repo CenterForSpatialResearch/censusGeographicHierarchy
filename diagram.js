@@ -23,14 +23,14 @@ var files = ["s_block_groups.csv",
 var mainShadowColor = "gold"
 var colors = {
 	nation:"#000",  
-	regions:"#7368d3",
-	divisions:"#bf50ce",
-	states:"#458e2f",
-	counties:"#cd5136",
-	tracts:"#48b263",
+	regions:"#0299D9",
+	divisions:"#B610BF",
+	states:"#00AB38",
+	counties:"#FE0000",
+	tracts:"#FF922A",
 	groups:"#4bbbb1",
 	blocks:"#333",
-	subminor:"#cd5136",
+	subminor:"#FE0000",
 	blank:"#000"
 }
 var fileNameToColor = {
