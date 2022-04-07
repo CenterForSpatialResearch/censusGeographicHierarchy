@@ -73,7 +73,7 @@ def simplifyFile(inputfile):
 
 def histo(inputfile,interval,csvWriter,minMax):
     print inputfile
-
+    count = 0
     with open("data/"+inputfile+".csv","r") as csvFile:
         csvReader = csv.reader(csvFile)
         for row in csvReader:
@@ -87,6 +87,7 @@ def histo(inputfile,interval,csvWriter,minMax):
             break
         bins = {}
         for row in csvReader:
+            count+=1
             pop = float(row[populationIndex])
             binNumber = "_"+str(math.floor(pop/interval))
             gid = row[0]
@@ -103,7 +104,7 @@ def histo(inputfile,interval,csvWriter,minMax):
     #print binsList
    # print interval
     print len(binsList)
-    csvWriter.writerow([inputfile,interval,minMax[0],minMax[1],binsList])
+    csvWriter.writerow([inputfile,count,interval,minMax[0],minMax[1],binsList])
 
 def maxMinCount(inputfile,outputWriter):
     #print inputfile
@@ -199,7 +200,7 @@ histoBinSize = {
 }
 with open("histo.csv","w")as outfile:
     csvWriter = csv.writer(outfile)
-    csvWriter.writerow(["geo","interval","min","max","bins"])
+    csvWriter.writerow(["geo","count","interval","min","max","bins"])
     for f in files:
         minMaxPop = maxMinCount(f,csvWriter)
         print(minMaxPop)

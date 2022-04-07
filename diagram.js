@@ -152,8 +152,9 @@ function drawNation(data){
 	var barH = 40
 	
 	var nationDiv = d3.select("#detail").append("div").attr("id","nation").attr("class","detailChart")
-	var nationTitle = nationDiv.append("div").html("NATION POPULATION OVERVIEW")
-	.attr("class","_0")
+	var nationTitle = nationDiv.append("div").html("POPULATION OVERVIEW")
+	.attr("class","_1")
+	
 	var nationSvg = nationDiv.append("svg").attr("width",w+p*7).attr("height",h)
 	
 	var xScale = d3.scaleLinear().domain([0,parseInt(data[0].max)]).range([5,w])
@@ -169,7 +170,7 @@ function drawNation(data){
 	.style("font-size","14px")
 	
 	nationSvg.append("text").text("POPULATION").attr("x",w).attr("y",h-p/2).style("text-anchor","middle")
-	.attr("class","_1")
+	.attr("class","_4")
 	nationSvg.selectAll(".nationBars")
 	.data(data)
 	.enter()
@@ -308,7 +309,7 @@ function drawNation(data){
 		var min = numberWithCommas(d.min)
 		var max = numberWithCommas(d.max)
 		var geo = d.geo.split("_").join(" ")
-		return geo.toUpperCase()
+		return numberWithCommas(d.count)+" "+geo.toUpperCase()
 	})
 	.attr("transform","translate("+p*4+","+p/2+")")
 	.attr("fill",function(d){
@@ -323,6 +324,7 @@ function numberWithCommas(num) {
 
 
 function drawScatter(data,geo,chartColor){
+	//console.log(data.length)
 	//console.log(chartColor)
 	var scatterW = 500
 	var scatterH = 300
@@ -333,7 +335,7 @@ function drawScatter(data,geo,chartColor){
 	//console.log(maxPop,maxArea)
 	var scatterDiv = d3.select("#detail").append("div").attr("id",cleanString(geo))
 	.attr("class","detailChart")
-	var titleDiv = scatterDiv.append("div").html(geo.toUpperCase())
+	var titleDiv = scatterDiv.append("div").html(data.length+" "+geo.toUpperCase())
 	.style("color",chartColor).attr("class","_0")
 	
 	var scatterSvg = scatterDiv.append('svg')
@@ -341,10 +343,10 @@ function drawScatter(data,geo,chartColor){
 	.attr("height",scatterH+scatterP*2)
 	
 	
-	scatterSvg.append("text").text("population").attr("x",scatterW/2)
-	.attr("y",scatterH+scatterP*1.5)
+	scatterSvg.append("text").text("POPULATION").attr("x",scatterW/2)
+	.attr("y",scatterH+scatterP*1.8)
 	
-	scatterSvg.append("text").text("area").attr("x",0).attr("y",0)
+	scatterSvg.append("text").text("AREA").attr("x",0).attr("y",0)
 	.attr("transform","rotate(90) translate("+scatterP*2+","+(-scatterP*.2)+")")
 	
 	
@@ -428,6 +430,7 @@ function drawChart(data, w, p, ch, chartColor){
 	// var w = 600
 	// var p = 40
 	// var ch = 300
+	//console.log(data.count)
 	var barInterval = data.interval
 	// for(var i in data){
 		// 		var chartColor = colors[fileNameToColor[data[i].geo]]
@@ -452,7 +455,7 @@ function drawChart(data, w, p, ch, chartColor){
 			
 			var chartDiv = d3.select("#detail").append("div").attr("id",cleanString(geo))
 			.attr("class","detailChart")
-			var titleDiv = chartDiv.append("div").html(geo.split("_").join(" ").toUpperCase())
+			var titleDiv = chartDiv.append("div").html(numberWithCommas(data.count)+" "+geo.split("_").join(" ").toUpperCase())
 			.style("color",chartColor).attr("class","_0")
 			
 			var chartSvg = chartDiv.append("svg").attr("width",w+p*2).attr("height",ch+p*2)
@@ -469,8 +472,8 @@ function drawChart(data, w, p, ch, chartColor){
 			var xAxis = d3.axisBottom().scale(xScale).ticks(5)
 			chartSvg.append("g").call(xAxis).attr("transform","translate("+p*2+","+(ch+p)+")")
 			// var xAxis =
-			chartSvg.append("text").text("population").attr("x",w/2).attr("y",ch+p*1.8)
-			chartSvg.append("text").text("# of "+data.geo.split("_").join(" ")).attr("x",0).attr("y",0)
+			chartSvg.append("text").text("POPULATION").attr("x",w/2).attr("y",ch+p*1.8)
+			chartSvg.append("text").text("# of "+data.geo.split("_").join(" ").toUpperCase()).attr("x",0).attr("y",0)
 			.attr("transform","rotate(90) translate("+p+","+(-p*.5)+")")
 			
 			var pastMax =0
